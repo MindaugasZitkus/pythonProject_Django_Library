@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% comment 'Taip komentuojame koda blokais' %}
+Pagrindinis html sablonas, sukurtas Bootstrap5 ir tarpais idetas jinja kodas
+{% endcomment %}
 <html lang="en">
 <head>
   <title>{% block "title" %} {% endblock %}</title>
@@ -38,11 +41,15 @@
   </div>
 </nav>
 
-<!--<ul class="sidebar-nav">-->
-<!--  <li><a href="{% url 'index' %}">Pradžia</a></li>-->
-<!--  <li><a href="">Visos knygos</a></li>-->
-<!--  <li><a href="">Visi autoriai</a></li>-->
-<!--</ul>-->
+{% comment 'Taip komentuojame koda blokais' %}
+<ul class="sidebar-nav">
+  <li><a href="{% url 'index' %}">Pradžia</a></li>
+  <li><a href="">Visos knygos</a></li>
+  <li><a href="">Visi autoriai</a></li>
+</ul>
+{% endcomment %}
+
+{# Taip veikia Jinja/html komentavimas #}
 
 <div class = "container">
     {% block "content" %} {% endblock %}
