@@ -34,7 +34,7 @@ class Book(models.Model):
     isbn = models.CharField(verbose_name="ISBN", max_length= 13)
     author = models.ForeignKey(to="Author", verbose_name="Autorius", on_delete=models.SET_NULL, null=True,related_name='books' )
     genre = models.ManyToManyField(to="Genre", verbose_name="Zanras")
-    cover = models.ImageField(verbose_name='Virselis', null=True, upload_to='covers')
+    cover = models.ImageField(verbose_name='Virselis', null=True, upload_to='covers', blank=True)
 
     def display_genre(self):
         return ", ".join(genre.name for genre in self.genre.all())
