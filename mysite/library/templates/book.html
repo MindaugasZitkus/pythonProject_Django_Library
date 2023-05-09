@@ -1,30 +1,48 @@
 {% extends "base.html" %}
 
-{% block "title" %} Knyga {% endblock %}
+{% block "title" %}Knyga{% endblock%}
 
 {% block "content" %}
 {% load static %}
+{% if book.cover %}
 <div>
-    {% if book.cover %}
-    <img src="{{ book.cover.url }}" class="img-fluid" alt="..." width="300" height="300">
+    <img src="{{ book.cover.url }}" class="max-width: 20%" alt="...">
     {% else %}
-    <img src="{% static 'img/no-image.png' %}" class="img-fluid " width="300" height="300">
+    <img src="{% static 'img/no-image.png' %}" class="max-width: 20%">
     {% endif %}
-
-
 </div>
 <br>
-<h1>{{ book.title }}:</h1>
+<h1>{{ book.title }}</h1>
 <ul>
-    <li><strong>Autorius:</strong>{{ book.author }}</li>
-    <li><strong>Zanras:</strong>{{ book.display_genre }}</li>
-    <li><strong>ISBN:</strong>{{ book.isbn }}</li>
+    <li><strong>Autorius: </strong>{{ book.author }}</li>
+    <li><strong>Žanras: </strong>{{ book.display_genre }}</li>
+    <li><strong>ISBN: </strong>{{ book.isbn }}</li>
 </ul>
 <p>{{ book.summary }}</p>
+<h2>Atsiliepimai</h2>
+{% if user.is_authenticated %}
+<div class="fieldWrapper">
+    <hr><br/>
+    <h4>Palikite atsiliepimą:</h4>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.content }}
+        <input type="submit" value="Komentuoti">
+    </form>
+</div>
+{% endif %}
+{% if book.reviews.all %}
+{% for review in book.reviews.all %}
+<hr>
+<strong>{{ review.reviewer }}</strong>, <em>{{ review.date_created}}</em>
+<p>{{ review.content }}</p>
+{% endfor %}
+{% else %}
+<p>Knyga neturi atsiliepimų</p>
+{% endif %}
 <h2>Knygos egzemplioriai:</h2>
 <ol>
     {% for instance in book.instances.all %}
-    <hr>
     <p class="{% if instance.status == 'a' %}text-success{% elif instance.status == 'r' %}text-danger{% else %}text-warning{% endif %}">
         {{ instance.get_status_display }}
     </p>
@@ -32,7 +50,7 @@
     <p><strong>Bus grąžinta:</strong> {{ instance.due_back }}</p>
     {% endif %}
     <p class="text-muted"><strong>Id:</strong> {{ instance.uuid }}</p>
+    <hr>
     {% endfor %}
 </ol>
-
-{% endblock %}
+{% endblock%}
